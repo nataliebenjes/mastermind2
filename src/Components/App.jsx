@@ -56,11 +56,22 @@ export default function App() {
     for (let i = 0; i < 4; i++) {
       currNum += board[currAttempt.attempt][i];
     }
+    let feedback = "";
+    const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
+
+    const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
+
+    const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
+
     console.log(board[0]);
-    if (userInput === board[0].join("")) {
-      console.log("You guessed correctly!")
-      return;
+    if (correctLocationCount === 4) {
+      feedback = "You guessed correctly! (Correct Number and Correct Location)";
+    } else if (correctLocationCount < 4 && correctLocationCount !== 0) {
+      feedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
+    } else {
+      feedback = "Incorrect guess";
     }
+    console.log(feedback);
     setCurrAttempt((prevAttempt) => ({
       attempt: prevAttempt.attempt + 1,
       number: userInput,
