@@ -2,7 +2,7 @@ import React, { useState, createContext } from "react";
 import Header from "./Header";
 import Board from "./Board";
 import { boardDefault } from "../Numbers";
-import Keyboard from "./Keyboard";
+import Keyboard from "./NumbersSubmit";
 import "../App.css";
 
 
