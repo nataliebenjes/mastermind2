@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Number() {
+function Number({ numberPos, attemptVal }) {
   return (
-    <div>Number</div>
+    <div className="number">Number</div>
   )
 }
 

@@ -37,6 +37,36 @@ function Board() {
         <Number numberPos={2} attemptVal={4} />
         <Number numberPos={3} attemptVal={4} />
       </div>
+      <div>
+        <Number numberPos={0} attemptVal={5} />
+        <Number numberPos={1} attemptVal={5} />
+        <Number numberPos={2} attemptVal={5} />
+        <Number numberPos={3} attemptVal={5} />
+      </div>
+      <div>
+        <Number numberPos={0} attemptVal={6} />
+        <Number numberPos={1} attemptVal={6} />
+        <Number numberPos={2} attemptVal={6} />
+        <Number numberPos={3} attemptVal={6} />
+      </div>
+      <div>
+        <Number numberPos={0} attemptVal={7} />
+        <Number numberPos={1} attemptVal={7} />
+        <Number numberPos={2} attemptVal={7} />
+        <Number numberPos={3} attemptVal={7} />
+      </div>
+      <div>
+        <Number numberPos={0} attemptVal={8} />
+        <Number numberPos={1} attemptVal={8} />
+        <Number numberPos={2} attemptVal={8} />
+        <Number numberPos={3} attemptVal={8} />
+      </div>
+      <div>
+        <Number numberPos={0} attemptVal={9} />
+        <Number numberPos={1} attemptVal={9} />
+        <Number numberPos={2} attemptVal={9} />
+        <Number numberPos={3} attemptVal={9} />
+      </div>
     </div>
   );
 }
