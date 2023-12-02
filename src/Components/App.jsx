@@ -13,11 +13,11 @@ function App() {
   return (
     <div className="App">
       <React.Fragment>
-        {/* <AppContext.Provider value={{ board, setBoard, }}> */}
+        <AppContext.Provider value={{ board, setBoard }}>
           <Board />
           <Keyboard />
           <Header />
-        {/* </AppContext.Provider> */}
+        </AppContext.Provider>
       </React.Fragment>
     </div>
   );
