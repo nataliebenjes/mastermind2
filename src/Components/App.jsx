@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import Header from "./Header";
 import Board from "./Board";
 import { boardDefault } from "../Numbers";
@@ -8,9 +8,11 @@ import NumbersSubmit from "./NumbersSubmit";
 
 export const AppContext = createContext();
 
-function App() {
+export default function App() {
   const [board, setBoard] = useState(boardDefault);
-  const secretCode = null;
+  const [currAttempt, setCurrAttempt] = useState({ attempt: 0, number: "" });
+
+  // const secretCode = null;
   // Function to generate a random code for the computer
   const generateSecretCode = () => {
     const secretCode = [];
@@ -21,18 +23,47 @@ function App() {
     }
     return secretCode;
   };
+
+  const generateNewBoard = (secretCode) => {
+    const newBoard = [];
+      // Initialize the board with empty arrays
+    for (let attempt = 0; attempt < 12; attempt++) {
+      newBoard.push([]);
+    }
+    newBoard[0] = secretCode;
+    setBoard(newBoard);
+    // console.log("board", board);
+  }
+  useEffect(() => {
+    // Side effect logic to run after currAttempt is updated
+    console.log(`Attempt: ${currAttempt.attempt}, Number: ${currAttempt.number}`);
+  }, [currAttempt]);
+  
+
   const handleFormSubmission = (userInput) => {
-    if (secretCode === null) {
+    if ( currAttempt.attempt === 0) {
       const secretCode = generateSecretCode();
+      generateNewBoard(secretCode);
+    }
+    console.log("User input:", userInput);
+
+    if (currAttempt.attempt > 10) {
+      console.log("game over");
+      return;
     }
 
-    console.log("User input:", userInput);
-    generateNewBoard(userInput);
+    let currNum = userInput;
+    for (let i = 0; i < 4; i++) {
+      currNum += board[currAttempt.attempt][i];
+    }
+    // console.log(currNum);
+
+    setCurrAttempt((prevAttempt) => ({
+      attempt: prevAttempt.attempt + 1,
+      number: currNum,
+    }));
   };
-  generateNewBoard = () => {
-    const newBoard = 
-    setBoard(newBoard);
-  }
+
   return (
     <div className="App">
       <React.Fragment>
@@ -45,5 +76,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
