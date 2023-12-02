@@ -78,7 +78,6 @@ Here are some potential areas for improvement:
 
 If you have any feedback, suggestions, or need support, please feel free to reach out via GitHub.
 
-Enjoy using the Uncle Iroh's Tea Shop Inventory Tracker!
 
 
 ## License

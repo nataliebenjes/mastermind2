@@ -1,10 +1,15 @@
 import React from "react";
 import Header from "./Header";
+import Board from "./Board";
+import Keyboard from "./Keyboard";
+
 
 function App() {
   return (
     <div>
     <React.Fragment>
+      <Board />
+      <Keyboard />
       <Header />
     </React.Fragment>
     </div>
