@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Number from "./Number";
-import { boardDefault } from "../Numbers";
+// import { boardDefault } from "../Numbers";
 
 
 function Board() {
-  const [board, setBoard] = useState(boardDefault);
+  // const [board, setBoard] = useState(boardDefault);
   return (
     <div className="board">
       {" "}

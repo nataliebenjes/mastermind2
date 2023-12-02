@@ -36,16 +36,16 @@ export default function App() {
   }
   useEffect(() => {
     // Side effect logic to run after currAttempt is updated
-    console.log(`Attempt: ${currAttempt.attempt}, Number: ${currAttempt.number}`);
+    console.log(`On Guess number: ${currAttempt.attempt}, You guessed: ${currAttempt.number}`);
   }, [currAttempt]);
   
 
   const handleFormSubmission = (userInput) => {
-    if ( currAttempt.attempt === 0) {
-      const secretCode = generateSecretCode();
+    if (currAttempt.attempt === 0) {
+      let secretCode = generateSecretCode();
       generateNewBoard(secretCode);
     }
-    console.log("User input:", userInput);
+    // console.log("User input:", userInput);
 
     if (currAttempt.attempt > 10) {
       console.log("game over");
@@ -56,11 +56,14 @@ export default function App() {
     for (let i = 0; i < 4; i++) {
       currNum += board[currAttempt.attempt][i];
     }
-    // console.log(currNum);
-
+    console.log(board[0]);
+    if (userInput === board[0].join("")) {
+      console.log("You guessed correctly!")
+      return;
+    }
     setCurrAttempt((prevAttempt) => ({
       attempt: prevAttempt.attempt + 1,
-      number: currNum,
+      number: userInput,
     }));
   };
 
