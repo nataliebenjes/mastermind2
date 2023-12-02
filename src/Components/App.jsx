@@ -3,28 +3,24 @@ import Header from "./Header";
 import Board from "./Board";
 import { boardDefault } from "../Numbers";
 import Keyboard from "./Keyboard";
+import "../App.css";
+
 
 export const AppContext = createContext();
 
 function App() {
   const [board, setBoard] = useState(boardDefault);
   return (
-    <div>
+    <div className="App">
       <React.Fragment>
-        <AppContext.Provider value={{ board, setBoard, }}>
+        {/* <AppContext.Provider value={{ board, setBoard, }}> */}
           <Board />
           <Keyboard />
           <Header />
-        </AppContext.Provider>
+        {/* </AppContext.Provider> */}
       </React.Fragment>
     </div>
   );
 }
 
 export default App;
-
-
-
-//syntactic sugar makes it so we don't have to write "React.createElement"
-
-//React.Fragment creates html that isn't wrapped in a div
