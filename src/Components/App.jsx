@@ -14,6 +14,8 @@ export default function App() {
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
+  const guessesRemaining = 10 - currAttempt.attempt;
+
   
   const generateSecretCode = async () => {
     try {
@@ -48,46 +50,46 @@ export default function App() {
   
 
   const handleFormSubmission = async (userInput) => {
-
     if (currAttempt.attempt > 10) {
       setGameOver(true);
       console.log("game over");
       return;
-    }
-
-    let currNum = userInput;
-    for (let i = 0; i < 4; i++) {
-      currNum += board[currAttempt.attempt][i];
-    }
-    let newFeedback = "";
-    const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
-
-    const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
-
-    const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
-
-    console.log("userInputArray:", userInputArray);
-    console.log("board[0]:", board[0]);
-    console.log("correctNumberCount:", correctNumberCount);
-    console.log("correctLocationCount:", correctLocationCount);
-
-    if (correctLocationCount === 4) {
-      newFeedback = "Game Complete! You guessed correctly! (Correct Number and Correct Location)";
-      setGameOver(true);
-    } else if (correctNumberCount > 0) {
-      newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
     } else {
-      newFeedback = "Incorrect guess";
+
+      let currNum = userInput;
+      for (let i = 0; i < 4; i++) {
+        currNum += board[currAttempt.attempt][i];
+      }
+      let newFeedback = "";
+      const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
+
+      const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
+
+      const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
+
+      console.log("userInputArray:", userInputArray);
+      console.log("board[0]:", board[0]);
+      console.log("correctNumberCount:", correctNumberCount);
+      console.log("correctLocationCount:", correctLocationCount);
+
+      if (correctLocationCount === 4) {
+        newFeedback = "Game Complete! You guessed correctly! (Correct Number and Correct Location)";
+        setGameOver(true);
+      } else if (correctNumberCount > 0) {
+        newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
+      } else {
+        newFeedback = "Incorrect guess";
+      }
+      setFeedback(newFeedback);
+
+      setGuesses((prevGuesses) => [...prevGuesses, { attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
+
+      console.log(feedback);
+      setCurrAttempt((prevAttempt) => ({
+        attempt: prevAttempt.attempt + 1,
+        number: userInput,
+      }));
     }
-    setFeedback(newFeedback);
-
-    setGuesses((prevGuesses) => [...prevGuesses, { attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
-
-    console.log(feedback);
-    setCurrAttempt((prevAttempt) => ({
-      attempt: prevAttempt.attempt + 1,
-      number: userInput,
-    }));
   };
 
   return (
@@ -99,15 +101,19 @@ export default function App() {
           <div>
             <h4>This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.</h4>
             <h2>Guesses:</h2>
+            <p>Guesses Remaining: {guessesRemaining}</p>
             <ul>
               {guesses.map((guess) => (
                 <li key={guess.attempt}>
-                  Attempt {guess.attempt}: {guess.number} - {guess.feedback}
+                  Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
                 </li>
               ))}
             </ul>
+            {guessesRemaining === 0 &&
+            <h2>You ran out of guesses</h2>
+            }
             {gameOver === true &&
-            <h2>Game over!</h2>
+            <h2>Game over! The secret code is {board[0]}</h2>
             }
           </div>
           <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
