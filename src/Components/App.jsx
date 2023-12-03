@@ -71,7 +71,7 @@ export default function App() {
       console.log("correctLocationCount:", correctLocationCount);
 
       if (correctLocationCount === 4) {
-        newFeedback = `Game Complete! Player ${currAttempt.player} guessed correctly! (Correct Number and Correct Location)`;
+        newFeedback = `Player ${currAttempt.player} guessed correctly! (Correct Number and Correct Location)`;
         setGameOver(true);
       } else if (correctNumberCount > 0) {
         newFeedback = `Player ${currAttempt.player} guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
@@ -100,27 +100,47 @@ export default function App() {
       <React.Fragment>
         <AppContext.Provider value={{ board, setBoard }}>
           <Header />
-          <div>
+          <div className="game-container">
             <h4>
-            This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
+              This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
             </h4>
             <h2>Guesses:</h2>
             {gameOver && (
               <React.Fragment>
                 <p>Game Over! The secret code is {board[0]}</p>
+                <p>{feedback}</p>
                 <button onClick={handleRefresh}>Play Again</button>
               </React.Fragment>
             )}
             {!gameOver && (
               <React.Fragment>
-                <p>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</p>
-                <ul>
-                  {guesses.map((guess) => (
-                    <li key={guess.attempt}>
-                    Player {guess.player}, Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
-                  </li>
-                  ))}
-                </ul>
+                <h2>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</h2>
+                <div className="guesses-container">
+                  <div className="player-feedback">
+                    <h3>Player 1's Feedback</h3>
+                    <ul>
+                      {guesses
+                        .filter((guess) => guess.player === 1)
+                        .map((guess) => (
+                          <li key={guess.attempt}>
+                            Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <div className="player-feedback">
+                    <h3>Player 2's Feedback</h3>
+                    <ul>
+                      {guesses
+                        .filter((guess) => guess.player === 2)
+                        .map((guess) => (
+                          <li key={guess.attempt}>
+                            Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                </div>
                 <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
               </React.Fragment>
             )}
