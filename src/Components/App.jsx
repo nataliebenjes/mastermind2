@@ -12,43 +12,37 @@ export const AppContext = createContext();
 export default function App() {
   const [board, setBoard] = useState(boardDefault);
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, number: "" });
-
-  // const secretCode = null;
-  // Function to generate a random code for the computer
+  const [guesses, setGuesses] = useState([]);
+  const [feedback, setFeedback] = useState("");
+  
   const generateSecretCode = async () => {
     try {
       const apiResponse = await NumberCall.codeSearch();
-      console.log("apiresp", apiResponse);
-      // Use the response from the API call as the secret code
-      const secretCode = apiResponse.split('').map(Number);
+      const secretCode = apiResponse;
       console.log("secretCode", secretCode);
       return secretCode;
     } catch (error) {
       console.error("Error fetching secret code", error);
-      // Handle error if needed
       return null;
     }
   };
-  // const generateSecretCode = () => {
-  //   const secretCode = [];
-  //   for (let i = 0; i < 4; i++) {
-  //     // Generate a random number between 0 and 7
-  //     const randomNumber = Math.floor(Math.random() * 8);
-  //     secretCode.push(randomNumber);
-  //   }
-  //   return secretCode;
-  // };
 
-  const generateNewBoard = (secretCode) => {
-    const newBoard = [];
-      // Initialize the board with empty arrays
-    for (let attempt = 0; attempt < 12; attempt++) {
-      newBoard.push([]);
+// needs to be async because NumberCall.codeSearch returns a promise
+  const generateNewBoard = async () => {
+    try {
+      const secretCode = await generateSecretCode();
+      if (secretCode) {
+        const newBoard = [];
+        for (let attempt = 0; attempt < 12; attempt++) {
+          newBoard.push([]);
+        }
+        newBoard[0] = secretCode;
+        setBoard(newBoard);
+      }
+    } catch (error) {
+      console.error("Error generating new board", error);
     }
-    newBoard[0] = secretCode;
-    setBoard(newBoard);
-    // console.log("board", board);
-  }
+  };
   useEffect(() => {
     // Side effect logic to run after currAttempt is updated
     console.log(`On Guess number: ${currAttempt.attempt}, You guessed: ${currAttempt.number}`);
@@ -60,7 +54,6 @@ export default function App() {
       let secretCode = generateSecretCode();
       generateNewBoard(secretCode);
     }
-    // console.log("User input:", userInput);
 
     if (currAttempt.attempt > 10) {
       console.log("game over");
@@ -71,7 +64,7 @@ export default function App() {
     for (let i = 0; i < 4; i++) {
       currNum += board[currAttempt.attempt][i];
     }
-    let feedback = "";
+    let newFeedback = "";
     const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
 
     const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
@@ -80,12 +73,16 @@ export default function App() {
 
     console.log(board[0]);
     if (correctLocationCount === 4) {
-      feedback = "You guessed correctly! (Correct Number and Correct Location)";
+      newFeedback = "You guessed correctly! (Correct Number and Correct Location)";
     } else if (correctLocationCount < 4 && correctLocationCount !== 0) {
-      feedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
+      newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
     } else {
-      feedback = "Incorrect guess";
+      newFeedback = "Incorrect guess";
     }
+    setFeedback(newFeedback);
+
+    setGuesses((prevGuesses) => [...prevGuesses, { attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
+
     console.log(feedback);
     setCurrAttempt((prevAttempt) => ({
       attempt: prevAttempt.attempt + 1,
@@ -97,8 +94,18 @@ export default function App() {
     <div className="App">
       <React.Fragment>
         <AppContext.Provider value={{ board, setBoard }}>
-          <Board />
+          {/* <Board /> */}
           <Header />
+          <div>
+            <h2>Guesses:</h2>
+            <ul>
+              {guesses.map((guess) => (
+                <li key={guess.attempt}>
+                  Attempt {guess.attempt}: {guess.number} - {guess.feedback}
+                </li>
+              ))}
+            </ul>
+          </div>
           <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
         </AppContext.Provider>
       </React.Fragment>
