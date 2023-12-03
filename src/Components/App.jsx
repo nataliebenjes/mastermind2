@@ -14,6 +14,8 @@ export default function App() {
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, number: "" });
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
+
+
   
   const generateSecretCode = async () => {
     try {
@@ -28,31 +30,40 @@ export default function App() {
   };
 
 // needs to be async because NumberCall.codeSearch returns a promise
-  const generateNewBoard = async () => {
-    try {
-      const secretCode = await generateSecretCode();
-      if (secretCode) {
-        const newBoard = [];
-        for (let attempt = 0; attempt < 12; attempt++) {
-          newBoard.push([]);
-        }
-        newBoard[0] = secretCode;
-        setBoard(newBoard);
+const generateNewBoard = async () => {
+  try {
+    const secretCode = await generateSecretCode();
+    if (secretCode) {
+      const newBoard = [];
+      for (let attempt = 0; attempt < 12; attempt++) {
+        newBoard.push([]);
       }
-    } catch (error) {
-      console.error("Error generating new board", error);
+      newBoard[0] = secretCode;
+      setBoard(newBoard);
+      setSecretCodeFetched(true);
     }
-  };
+  } catch (error) {
+    console.error("Error generating new board", error);
+  }
+};
+
   useEffect(() => {
     // Side effect logic to run after currAttempt is updated
     console.log(`On Guess number: ${currAttempt.attempt}, You guessed: ${currAttempt.number}`);
   }, [currAttempt]);
   
 
-  const handleFormSubmission = (userInput) => {
+  const handleFormSubmission = async (userInput) => {
     if (currAttempt.attempt === 0) {
-      let secretCode = generateSecretCode();
-      generateNewBoard(secretCode);
+      try {
+        let secretCode = await generateSecretCode();
+        if (secretCode) {
+          generateNewBoard(secretCode);
+        }
+      } catch (error) {
+        console.error("Error fetching or generating secret code", error);
+        return;
+      }
     }
 
     if (currAttempt.attempt > 10) {
@@ -71,10 +82,14 @@ export default function App() {
 
     const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
 
-    console.log(board[0]);
+    console.log("userInputArray:", userInputArray);
+    console.log("board[0]:", board[0]);
+    console.log("correctNumberCount:", correctNumberCount);
+    console.log("correctLocationCount:", correctLocationCount);
+
     if (correctLocationCount === 4) {
       newFeedback = "You guessed correctly! (Correct Number and Correct Location)";
-    } else if (correctLocationCount < 4 && correctLocationCount !== 0) {
+    } else if (correctNumberCount > 0) {
       newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
     } else {
       newFeedback = "Incorrect guess";
