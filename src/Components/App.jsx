@@ -50,7 +50,7 @@ export default function App() {
   
 
   const handleFormSubmission = async (userInput) => {
-    if (currAttempt.attempt > 10) {
+    if ((currAttempt.attempt + 2) > 10) {
       setGameOver(true);
       console.log("game over");
       return;
@@ -92,31 +92,40 @@ export default function App() {
     }
   };
 
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
   return (
     <div className="App">
       <React.Fragment>
         <AppContext.Provider value={{ board, setBoard }}>
-          {/* <Board /> */}
           <Header />
           <div>
-            <h4>This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.</h4>
+            <h4>
+              This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.
+            </h4>
             <h2>Guesses:</h2>
-            <p>Guesses Remaining: {guessesRemaining}</p>
-            <ul>
-              {guesses.map((guess) => (
-                <li key={guess.attempt}>
-                  Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
-                </li>
-              ))}
-            </ul>
-            {guessesRemaining === 0 &&
-            <h2>You ran out of guesses</h2>
-            }
-            {gameOver === true &&
-            <h2>Game over! The secret code is {board[0]}</h2>
-            }
+            {gameOver && (
+              <React.Fragment>
+                <p>Game Over! The secret code is {board[0]}</p>
+                <button onClick={handleRefresh}>Play Again</button>
+              </React.Fragment>
+            )}
+            {!gameOver && (
+              <React.Fragment>
+                <p>Guesses Remaining: {10 - currAttempt.attempt}</p>
+                <ul>
+                  {guesses.map((guess) => (
+                    <li key={guess.attempt}>
+                      Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
+                    </li>
+                  ))}
+                </ul>
+                <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
+              </React.Fragment>
+            )}
           </div>
-          <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
         </AppContext.Provider>
       </React.Fragment>
     </div>
