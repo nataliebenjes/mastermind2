@@ -1,6 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
 import Header from "./Header";
-import Board from "./Board";
 import { boardDefault } from "../Numbers";
 import "../App.css";
 import NumbersSubmit from "./NumbersSubmit";
@@ -40,7 +39,6 @@ const generateNewBoard = async () => {
       }
       newBoard[0] = secretCode;
       setBoard(newBoard);
-      setSecretCodeFetched(true);
     }
   } catch (error) {
     console.error("Error generating new board", error);
