@@ -4,6 +4,7 @@ import Board from "./Board";
 import { boardDefault } from "../Numbers";
 import "../App.css";
 import NumbersSubmit from "./NumbersSubmit";
+import NumberCall from "./NumberCall";
 
 
 export const AppContext = createContext();
@@ -14,15 +15,29 @@ export default function App() {
 
   // const secretCode = null;
   // Function to generate a random code for the computer
-  const generateSecretCode = () => {
-    const secretCode = [];
-    for (let i = 0; i < 4; i++) {
-      // Generate a random number between 0 and 7
-      const randomNumber = Math.floor(Math.random() * 8);
-      secretCode.push(randomNumber);
+  const generateSecretCode = async () => {
+    try {
+      const apiResponse = await NumberCall.codeSearch();
+      console.log("apiresp", apiResponse);
+      // Use the response from the API call as the secret code
+      const secretCode = apiResponse.split('').map(Number);
+      console.log("secretCode", secretCode);
+      return secretCode;
+    } catch (error) {
+      console.error("Error fetching secret code", error);
+      // Handle error if needed
+      return null;
     }
-    return secretCode;
   };
+  // const generateSecretCode = () => {
+  //   const secretCode = [];
+  //   for (let i = 0; i < 4; i++) {
+  //     // Generate a random number between 0 and 7
+  //     const randomNumber = Math.floor(Math.random() * 8);
+  //     secretCode.push(randomNumber);
+  //   }
+  //   return secretCode;
+  // };
 
   const generateNewBoard = (secretCode) => {
     const newBoard = [];
