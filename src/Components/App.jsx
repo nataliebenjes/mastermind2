@@ -13,8 +13,6 @@ export default function App() {
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, number: "" });
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
-
-
   
   const generateSecretCode = async () => {
     try {
@@ -45,24 +43,31 @@ const generateNewBoard = async () => {
   }
 };
 
+  // useEffect(() => {
+  //   // Side effect logic to run after currAttempt is updated
+  //   console.log(`On Guess number: ${currAttempt.attempt}, You guessed: ${currAttempt.number}`);
+  // }, [currAttempt]);
+
   useEffect(() => {
-    // Side effect logic to run after currAttempt is updated
-    console.log(`On Guess number: ${currAttempt.attempt}, You guessed: ${currAttempt.number}`);
+    const fetchSecretCode = async () => {
+      const secretCode = await generateSecretCode();
+      if (secretCode) {
+        const newBoard = [];
+        for (let attempt = 0; attempt < 12; attempt++) {
+          newBoard.push([]);
+        }
+        newBoard[0] = secretCode;
+        setBoard(newBoard);
+      }
+    };
+
+    if (currAttempt.attempt === 0) {
+      fetchSecretCode();
+    }
   }, [currAttempt]);
   
 
   const handleFormSubmission = async (userInput) => {
-    if (currAttempt.attempt === 0) {
-      try {
-        let secretCode = await generateSecretCode();
-        if (secretCode) {
-          generateNewBoard(secretCode);
-        }
-      } catch (error) {
-        console.error("Error fetching or generating secret code", error);
-        return;
-      }
-    }
 
     if (currAttempt.attempt > 10) {
       console.log("game over");
@@ -86,7 +91,7 @@ const generateNewBoard = async () => {
     console.log("correctLocationCount:", correctLocationCount);
 
     if (correctLocationCount === 4) {
-      newFeedback = "You guessed correctly! (Correct Number and Correct Location)";
+      newFeedback = "Game Complete! You guessed correctly! (Correct Number and Correct Location)";
     } else if (correctNumberCount > 0) {
       newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
     } else {
