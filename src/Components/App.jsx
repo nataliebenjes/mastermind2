@@ -10,12 +10,10 @@ export const AppContext = createContext();
 
 export default function App() {
   const [board, setBoard] = useState(boardDefault);
-  const [currAttempt, setCurrAttempt] = useState({ attempt: 0, number: "" });
+  const [currAttempt, setCurrAttempt] = useState({ player: 1, attempt: 0, number: "" });
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  const guessesRemaining = 10 - currAttempt.attempt;
-
   
   const generateSecretCode = async () => {
     try {
@@ -73,20 +71,21 @@ export default function App() {
       console.log("correctLocationCount:", correctLocationCount);
 
       if (correctLocationCount === 4) {
-        newFeedback = "Game Complete! You guessed correctly! (Correct Number and Correct Location)";
+        newFeedback = `Game Complete! Player ${currAttempt.player} guessed correctly! (Correct Number and Correct Location)`;
         setGameOver(true);
       } else if (correctNumberCount > 0) {
-        newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
+        newFeedback = `Player ${currAttempt.player} guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
       } else {
-        newFeedback = "Incorrect guess";
+        newFeedback = `Player ${currAttempt.player}'s guess was incorrect`;
       }
       setFeedback(newFeedback);
 
-      setGuesses((prevGuesses) => [...prevGuesses, { attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
+      setGuesses((prevGuesses) => [...prevGuesses, { player: currAttempt.player, attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
 
       console.log(feedback);
       setCurrAttempt((prevAttempt) => ({
-        attempt: prevAttempt.attempt + 1,
+        player: prevAttempt.player === 1 ? 2 : 1,
+        attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
         number: userInput,
       }));
     }
@@ -103,7 +102,7 @@ export default function App() {
           <Header />
           <div>
             <h4>
-              This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.
+            This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
             </h4>
             <h2>Guesses:</h2>
             {gameOver && (
@@ -114,12 +113,12 @@ export default function App() {
             )}
             {!gameOver && (
               <React.Fragment>
-                <p>Guesses Remaining: {10 - currAttempt.attempt}</p>
+                <p>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</p>
                 <ul>
                   {guesses.map((guess) => (
                     <li key={guess.attempt}>
-                      Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
-                    </li>
+                    Player {guess.player}, Attempt {guess.attempt + 1}: {guess.number} - {guess.feedback}
+                  </li>
                   ))}
                 </ul>
                 <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
