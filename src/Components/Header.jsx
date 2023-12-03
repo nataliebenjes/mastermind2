@@ -16,7 +16,8 @@ function Header() {
   return (
     <HeaderWrapper>
 
-      <h1>Mastermind</h1>
+      <h1>Welcome to the Mastermind game! </h1>
+      <h2>Can you crack the code?</h2>
 
     </HeaderWrapper>
   );

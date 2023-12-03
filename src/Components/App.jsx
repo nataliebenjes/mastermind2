@@ -112,6 +112,7 @@ const generateNewBoard = async () => {
           {/* <Board /> */}
           <Header />
           <div>
+            <h4>This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.</h4>
             <h2>Guesses:</h2>
             <ul>
               {guesses.map((guess) => (

@@ -33,15 +33,12 @@ This Mastermind game allows you to play against the computer. The computer will 
 
 ## User Interface
 
-You can interact with the game through the provided user interface, which includes:
+Users can interact with the game through the provided user interface, which includes:
 
 - Ability to guess combinations of 4 numbers
 - View the history of guesses and their feedback
 - Display of the number of guesses remaining
 
-## Implementation
-
-You are free to choose the programming languages, tools, frameworks, and libraries you find appropriate within reason. The only restriction is not to use a game framework that implements Mastermind.
 
 ### API Integration
 
