@@ -141,7 +141,7 @@ export default function App() {
                     </ul>
                   </div>
                 </div>
-                <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
+                <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit guess" />
               </React.Fragment>
             )}
           </div>

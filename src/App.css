@@ -1,10 +1,10 @@
 .App {
   text-align: center;
-  background-color: #24582a;
+  background-color: #a8e2af;
   width: 100vw;
   height: 100vh;
   /* display: flex; */
-  color: white;
+  color: rgb(68, 28, 28);
 }
 
 body {
@@ -52,7 +52,7 @@ nav h1 {
 .board {
   width: 450px;
   height: 550px;
-  border: 1px solid black;
+  border: 1px solid rgb(75, 65, 65);
   display: flex;
   flex-direction: column;
 }

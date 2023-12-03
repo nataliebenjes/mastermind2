@@ -40,7 +40,7 @@ function NumbersSubmit(props) {
               label="Enter your four number guess"
               value={userInput}
               onChange={handleChange}
-            />
+              sx={{ width: '300px', fontSize: '14px' }}            />
             <IconButton type="submit" variant="contained" color="primary">
               {props.buttonText}
               <AddIcon />
