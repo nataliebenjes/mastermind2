@@ -13,6 +13,7 @@ export default function App() {
   const [currAttempt, setCurrAttempt] = useState({ attempt: 0, number: "" });
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
+  const [gameOver, setGameOver] = useState(false);
   
   const generateSecretCode = async () => {
     try {
@@ -27,27 +28,6 @@ export default function App() {
   };
 
 // needs to be async because NumberCall.codeSearch returns a promise
-const generateNewBoard = async () => {
-  try {
-    const secretCode = await generateSecretCode();
-    if (secretCode) {
-      const newBoard = [];
-      for (let attempt = 0; attempt < 12; attempt++) {
-        newBoard.push([]);
-      }
-      newBoard[0] = secretCode;
-      setBoard(newBoard);
-    }
-  } catch (error) {
-    console.error("Error generating new board", error);
-  }
-};
-
-  // useEffect(() => {
-  //   // Side effect logic to run after currAttempt is updated
-  //   console.log(`On Guess number: ${currAttempt.attempt}, You guessed: ${currAttempt.number}`);
-  // }, [currAttempt]);
-
   useEffect(() => {
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
@@ -70,6 +50,7 @@ const generateNewBoard = async () => {
   const handleFormSubmission = async (userInput) => {
 
     if (currAttempt.attempt > 10) {
+      setGameOver(true);
       console.log("game over");
       return;
     }
@@ -92,6 +73,7 @@ const generateNewBoard = async () => {
 
     if (correctLocationCount === 4) {
       newFeedback = "Game Complete! You guessed correctly! (Correct Number and Correct Location)";
+      setGameOver(true);
     } else if (correctNumberCount > 0) {
       newFeedback = `You guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
     } else {
@@ -124,6 +106,9 @@ const generateNewBoard = async () => {
                 </li>
               ))}
             </ul>
+            {gameOver === true &&
+            <h2>Game over!</h2>
+            }
           </div>
           <NumbersSubmit formSubmissionHandler={handleFormSubmission} buttonText="Submit" />
         </AppContext.Provider>
