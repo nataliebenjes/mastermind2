@@ -5,6 +5,7 @@ import "../App.css";
 import NumbersSubmit from "./NumbersSubmit";
 import NumberCall from "./NumberCall";
 
+
 export const AppContext = createContext();
 
 export default function App() {
@@ -13,35 +14,7 @@ export default function App() {
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(20);
-  const [timerInterval, setTimerInterval] = useState(null);
-
-
-  const updateTimer = () => {
-    
-    setTimeLeft((prevTimeLeft) => {
-      const newTime = prevTimeLeft - 1;
-      if (newTime <= 0) {
-        clearInterval(timerInterval);
-        switchPlayer();
-        // add functionality on what happens when the timer reaches 0
-      }
-      return newTime;
-    });
-  };
   
-  const switchPlayer = () => {
-    setCurrAttempt((prevAttempt) => ({
-      player: prevAttempt.player === 1 ? 2 : 1,
-      attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
-      number: "",
-    }));
-    setTimeLeft(20); // Reset the timer to its initial value
-    // setFeedback(`Player ${currAttempt.player}'s turn is over. Switching to Player ${currAttempt.player === 1 ? 2 : 1}.`);
-  };
-  
-  
-
   const generateSecretCode = async () => {
     try {
       const apiResponse = await NumberCall.codeSearch();
@@ -54,14 +27,8 @@ export default function App() {
     }
   };
 
-
+// needs to be async because NumberCall.codeSearch returns a promise
   useEffect(() => {
-    setTimerInterval(
-      setInterval(() => {
-        updateTimer();
-      }, 1000)
-    );
-    // needs to be async because NumberCall.codeSearch returns a promise
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
       if (secretCode) {
@@ -77,26 +44,21 @@ export default function App() {
     if (currAttempt.attempt === 0) {
       fetchSecretCode();
     }
-    return () => {
-      clearInterval(timerInterval);
-    };
-    }, [currAttempt]);
+  }, [currAttempt]);
   
 
   const handleFormSubmission = async (userInput) => {
     if ((currAttempt.attempt + 2) > 10) {
       setGameOver(true);
-      setFeedback("You have run out of attempts");
       console.log("game over");
-      } else {
+      return;
+    } else {
 
       let currNum = userInput;
       for (let i = 0; i < 4; i++) {
         currNum += board[currAttempt.attempt][i];
       }
-
       let newFeedback = "";
-
       const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
 
       const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
@@ -127,8 +89,7 @@ export default function App() {
         number: userInput,
       }));
     }
-    }
-  
+  };
 
   const handleRefresh = () => {
     window.location.reload();
@@ -154,9 +115,6 @@ export default function App() {
             {!gameOver && (
               <React.Fragment>
                 <h2>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</h2>
-                {timeLeft > 0 &&
-                  <p>You have: {timeLeft} seconds remaining!</p>
-                }
                 <div className="guesses-container">
                   <div className="player-feedback">
                     <h3>Player 1's Feedback</h3>
