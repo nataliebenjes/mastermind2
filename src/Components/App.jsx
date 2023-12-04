@@ -16,8 +16,16 @@ export default function App() {
   const [timer, setTimer] = useState(null);
 
   const updateTimer = () => {
-    setTimer((prevTime) => prevTime - 1);
+    setTimer((prevTime) => {
+      const newTime = prevTime - 1;
+      if (newTime <= 0) {
+        clearInterval(timer);
+        //add functionality on what happens when timer reaches 0
+      }
+      return newTime;
+    });
   };
+  
   
 
   const generateSecretCode = async () => {
@@ -51,6 +59,11 @@ export default function App() {
     if (currAttempt.attempt === 0) {
       fetchSecretCode();
     }
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };  
   }, [currAttempt]);
   
 
@@ -132,7 +145,12 @@ export default function App() {
             {!gameOver && (
               <React.Fragment>
                 <h2>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</h2>
-                <p>You have: {timer} seconds remaining!</p>
+                {timer > 0 &&
+                  <p>You have: {timer} seconds remaining!</p>
+                }
+                {timer <= 0 &&
+                  <p>{currAttempt.player}'s Turn is over. Please switch players</p>
+                }
                 <div className="guesses-container">
                   <div className="player-feedback">
                     <h3>Player 1's Feedback</h3>
