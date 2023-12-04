@@ -25,7 +25,6 @@ export default function App() {
         clearInterval(timerInterval);
         switchPlayer();
         // add functionality on what happens when the timer reaches 0
-        return 20;
       }
       return newTime;
     });
@@ -38,7 +37,7 @@ export default function App() {
       number: "",
     }));
     setTimeLeft(20); // Reset the timer to its initial value
-    setFeedback(`Player ${currAttempt.player}'s turn is over. Switching to Player ${currAttempt.player === 1 ? 2 : 1}.`);
+    // setFeedback(`Player ${currAttempt.player}'s turn is over. Switching to Player ${currAttempt.player === 1 ? 2 : 1}.`);
   };
   
   
@@ -57,13 +56,12 @@ export default function App() {
 
 
   useEffect(() => {
-    // needs to be async because NumberCall.codeSearch returns a promise
     setTimerInterval(
       setInterval(() => {
         updateTimer();
       }, 1000)
     );
-
+    // needs to be async because NumberCall.codeSearch returns a promise
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
       if (secretCode) {
@@ -88,9 +86,9 @@ export default function App() {
   const handleFormSubmission = async (userInput) => {
     if ((currAttempt.attempt + 2) > 10) {
       setGameOver(true);
+      setFeedback("You have run out of attempts");
       console.log("game over");
-      return;
-      }
+      } else {
 
       let currNum = userInput;
       for (let i = 0; i < 4; i++) {
@@ -129,6 +127,7 @@ export default function App() {
         number: userInput,
       }));
     }
+    }
   
 
   const handleRefresh = () => {
@@ -157,9 +156,6 @@ export default function App() {
                 <h2>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</h2>
                 {timeLeft > 0 &&
                   <p>You have: {timeLeft} seconds remaining!</p>
-                }
-                {timeLeft <= 0 &&
-                  <p>{currAttempt.player}'s Turn is over. Please switch players</p>
                 }
                 <div className="guesses-container">
                   <div className="player-feedback">
