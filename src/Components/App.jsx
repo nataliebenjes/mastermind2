@@ -16,15 +16,12 @@ export default function App() {
   const [timeLeft, setTimeLeft] = useState(20);
   const [timerInterval, setTimerInterval] = useState(null);
 
-
-  const updateTimer = () => {
-    
+  const updateTimer = () => { 
     setTimeLeft((prevTimeLeft) => {
       const newTime = prevTimeLeft - 1;
       if (newTime <= 0) {
         clearInterval(timerInterval);
         switchPlayer();
-        // add functionality on what happens when the timer reaches 0
       }
       return newTime;
     });
@@ -36,12 +33,9 @@ export default function App() {
       attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
       number: "",
     }));
-    setTimeLeft(20); // Reset the timer to its initial value
-    // setFeedback(`Player ${currAttempt.player}'s turn is over. Switching to Player ${currAttempt.player === 1 ? 2 : 1}.`);
+    setTimeLeft(20); 
   };
   
-  
-
   const generateSecretCode = async () => {
     try {
       const apiResponse = await NumberCall.codeSearch();
@@ -53,7 +47,6 @@ export default function App() {
       return null;
     }
   };
-
 
   useEffect(() => {
     setTimerInterval(
@@ -82,51 +75,49 @@ export default function App() {
     };
     }, [currAttempt]);
   
-
   const handleFormSubmission = async (userInput) => {
     if ((currAttempt.attempt + 2) > 10) {
       setGameOver(true);
       setFeedback("You have run out of attempts");
       console.log("game over");
       } else {
+        let currNum = userInput;
+        for (let i = 0; i < 4; i++) {
+          currNum += board[currAttempt.attempt][i];
+        }
 
-      let currNum = userInput;
-      for (let i = 0; i < 4; i++) {
-        currNum += board[currAttempt.attempt][i];
+        let newFeedback = "";
+
+        const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
+        //.includes checks, .filter keeps, Set stores, .size gives count
+        const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
+
+        const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
+
+        console.log("userInputArray:", userInputArray);
+        console.log("board[0]:", board[0]);
+        console.log("correctNumberCount:", correctNumberCount);
+        console.log("correctLocationCount:", correctLocationCount);
+
+        if (correctLocationCount === 4) {
+          newFeedback = `Player ${currAttempt.player} guessed correctly! (Correct Number and Correct Location)`;
+          setGameOver(true);
+        } else if (correctNumberCount > 0) {
+          newFeedback = `Player ${currAttempt.player} guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
+        } else {
+          newFeedback = `Player ${currAttempt.player}'s guess was incorrect`;
+        }
+        setFeedback(newFeedback);
+
+        setGuesses((prevGuesses) => [...prevGuesses, { player: currAttempt.player, attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
+
+        console.log(feedback);
+        setCurrAttempt((prevAttempt) => ({
+          player: prevAttempt.player === 1 ? 2 : 1,
+          attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
+          number: userInput,
+        }));
       }
-
-      let newFeedback = "";
-
-      const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
-
-      const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
-
-      const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
-
-      console.log("userInputArray:", userInputArray);
-      console.log("board[0]:", board[0]);
-      console.log("correctNumberCount:", correctNumberCount);
-      console.log("correctLocationCount:", correctLocationCount);
-
-      if (correctLocationCount === 4) {
-        newFeedback = `Player ${currAttempt.player} guessed correctly! (Correct Number and Correct Location)`;
-        setGameOver(true);
-      } else if (correctNumberCount > 0) {
-        newFeedback = `Player ${currAttempt.player} guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
-      } else {
-        newFeedback = `Player ${currAttempt.player}'s guess was incorrect`;
-      }
-      setFeedback(newFeedback);
-
-      setGuesses((prevGuesses) => [...prevGuesses, { player: currAttempt.player, attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
-
-      console.log(feedback);
-      setCurrAttempt((prevAttempt) => ({
-        player: prevAttempt.player === 1 ? 2 : 1,
-        attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
-        number: userInput,
-      }));
-    }
     }
   
 
