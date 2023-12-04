@@ -15,16 +15,29 @@ To set up the Mastermind on your local machine, follow these steps:
 
 # Mastermind Game
 
-Welcome to the Mastermind game! Can you crack the code?
+Welcome to the Mastermind game, a classic code-breaking game with a multiplayer twist!
 
 ## Overview
 
-This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.
+
+In this version of Mastermind, there are two players who take turns guessing the secret code. The game consists of 10 rounds, and each player gets 10 attempts to guess the secret code. The player who correctly guesses the code or has the closest guess when the maximum attempts are reached wins the game.
+
+
 
 ## Game Rules
 
-- The computer will randomly select a pattern of four different numbers at the start of the game.
-- You have 10 attempts to guess the number combinations.
+1. **Players:** Two players take turns guessing the secret code.
+
+2. **Secret Code:** The computer randomly selects a pattern of four different numbers from a total of 8 different numbers, allowing duplicates.
+
+3. **Turns:** Each player has 10 attempts to guess the secret code.
+
+4. **Timer:** A timer of 20 seconds is set for each turn. If a player doesn't make a guess within the time limit, their turn ends.
+
+5. **Scoring:** Players receive feedback after each guess, indicating the correctness of their numbers and their positions.
+
+6. **Winning:** The player who correctly guesses the code or has the closest guess when the maximum attempts are reached wins.
+
 - After each guess, the computer will provide feedback in the form of:
   - Correctly guessed number
   - Correctly guessed number and its correct location
@@ -38,6 +51,7 @@ Users can interact with the game through the provided user interface, which incl
 - Ability to guess combinations of 4 numbers
 - View the history of guesses and their feedback
 - Display of the number of guesses remaining
+- Display of time remaining in guess
 
 
 ### API Integration
@@ -67,9 +81,8 @@ Enjoy playing Mastermind! If you have any issues or suggestions, feel free to co
 
 Here are some potential areas for improvement:
 
-- Header currently cut off when multiple teas added
-- Adding user authentication for secure access.
-- Enhancing the UI for a more user-friendly experience.
+- Give user option to select multi player or single player mode
+- Fix timer glitch due to state. Possible to incorporate timer hook from react
 
 ## Feedback and Support
 
@@ -94,5 +107,3 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
-
-**Happy Brewing!** 🍵
