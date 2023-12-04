@@ -13,17 +13,32 @@ export default function App() {
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  const [timer, setTimer] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(20);
+  const [timerInterval, setTimerInterval] = useState(null);
+
 
   const updateTimer = () => {
-    setTimer((prevTime) => {
-      const newTime = prevTime - 1;
+    
+    setTimeLeft((prevTimeLeft) => {
+      const newTime = prevTimeLeft - 1;
       if (newTime <= 0) {
-        clearInterval(timer);
-        //add functionality on what happens when timer reaches 0
+        clearInterval(timerInterval);
+        switchPlayer();
+        // add functionality on what happens when the timer reaches 0
+        return 20;
       }
       return newTime;
     });
+  };
+  
+  const switchPlayer = () => {
+    setCurrAttempt((prevAttempt) => ({
+      player: prevAttempt.player === 1 ? 2 : 1,
+      attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
+      number: "",
+    }));
+    setTimeLeft(20); // Reset the timer to its initial value
+    setFeedback(`Player ${currAttempt.player}'s turn is over. Switching to Player ${currAttempt.player === 1 ? 2 : 1}.`);
   };
   
   
@@ -43,6 +58,11 @@ export default function App() {
 
   useEffect(() => {
     // needs to be async because NumberCall.codeSearch returns a promise
+    setTimerInterval(
+      setInterval(() => {
+        updateTimer();
+      }, 1000)
+    );
 
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
@@ -60,11 +80,9 @@ export default function App() {
       fetchSecretCode();
     }
     return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };  
-  }, [currAttempt]);
+      clearInterval(timerInterval);
+    };
+    }, [currAttempt]);
   
 
   const handleFormSubmission = async (userInput) => {
@@ -73,14 +91,6 @@ export default function App() {
       console.log("game over");
       return;
       }
-      if (timer) {
-        clearInterval(timer);
-      }
-      setTimer(20);
-      const intervalId = setInterval(() => {
-        updateTimer();
-      }, 1000);
-      setTimer(intervalId);
 
       let currNum = userInput;
       for (let i = 0; i < 4; i++) {
@@ -145,10 +155,10 @@ export default function App() {
             {!gameOver && (
               <React.Fragment>
                 <h2>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</h2>
-                {timer > 0 &&
-                  <p>You have: {timer} seconds remaining!</p>
+                {timeLeft > 0 &&
+                  <p>You have: {timeLeft} seconds remaining!</p>
                 }
-                {timer <= 0 &&
+                {timeLeft <= 0 &&
                   <p>{currAttempt.player}'s Turn is over. Please switch players</p>
                 }
                 <div className="guesses-container">
