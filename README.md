@@ -19,16 +19,29 @@ Welcome to the Mastermind game! Can you crack the code?
 
 ## Overview
 
-This Mastermind game allows you to play against the computer. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts.
+
+In this version of Mastermind, there are two players who take turns guessing the secret code. The game consists of 10 rounds, and each player gets 10 attempts to guess the secret code. The player who correctly guesses the code or has the closest guess when the maximum attempts are reached wins the game.
+
+
 
 ## Game Rules
 
-- The computer will randomly select a pattern of four different numbers at the start of the game.
-- You have 10 attempts to guess the number combinations.
+1. **Players:** Two players take turns guessing the secret code.
+
+2. **Secret Code:** The computer randomly selects a pattern of four different numbers from a total of 8 different numbers, allowing duplicates.
+
+3. **Turns:** Each player has 10 attempts to guess the secret code.
+
+
+5. **Scoring:** Players receive feedback after each guess, indicating the correctness of their numbers and their positions.
+
+6. **Winning:** The player who correctly guesses the code or has the closest guess when the maximum attempts are reached wins.
+
 - After each guess, the computer will provide feedback in the form of:
   - Correctly guessed number
   - Correctly guessed number and its correct location
   - Incorrect guess
+
 
 
 ## User Interface
@@ -67,9 +80,7 @@ Enjoy playing Mastermind! If you have any issues or suggestions, feel free to co
 
 Here are some potential areas for improvement:
 
-- Header currently cut off when multiple teas added
-- Adding user authentication for secure access.
-- Enhancing the UI for a more user-friendly experience.
+- Select single-player or multi-player
 
 ## Feedback and Support
 
