@@ -13,28 +13,6 @@ export default function App() {
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  // const [timeLeft, setTimeLeft] = useState(20);
-  // const [timerInterval, setTimerInterval] = useState(null);
-
-  // const updateTimer = () => { 
-  //   setTimeLeft((prevTimeLeft) => {
-  //     const newTime = prevTimeLeft - 1;
-  //     if (newTime <= 0) {
-  //       clearInterval(timerInterval);
-  //       switchPlayer();
-  //     }
-  //     return newTime;
-  //   });
-  // };
-  
-  // const switchPlayer = () => {
-  //   setCurrAttempt((prevAttempt) => ({
-  //     player: prevAttempt.player === 1 ? 2 : 1,
-  //     attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
-  //     number: "",
-  //   }));
-  //   setTimeLeft(20); 
-  // };
   
   const generateSecretCode = async () => {
     try {
@@ -49,11 +27,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    // setTimerInterval(
-    //   setInterval(() => {
-    //     updateTimer();
-    //   }, 1000)
-    // );
+   
     // needs to be async because NumberCall.codeSearch returns a promise
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
@@ -70,9 +44,6 @@ export default function App() {
     if (currAttempt.attempt === 0 && currAttempt.player === 1) {
       fetchSecretCode();
     }
-    // return () => {
-    //   clearInterval(timerInterval);
-    // };
     }, [currAttempt]);
   
   const handleFormSubmission = async (userInput) => {
@@ -87,23 +58,44 @@ export default function App() {
         }
 
         let newFeedback = "";
-
+        //break up guessed number
         const userInputArray = userInput.split("").map((num) => parseInt(num, 10));
-        //.includes checks, .filter keeps, Set stores, .size gives count
-        const correctNumberCount = new Set(userInputArray.filter((num) => board[0].includes(num))).size;
+
+        const secretCodeOccurrences = {};
+        const userInputOccurrences = {};
+
+        // Count occurrences of each number in inputted array and secretCodeArray (board[0])
+        for (const num of board[0]) {
+            secretCodeOccurrences[num] = (secretCodeOccurrences[num] || 0) + 1;
+        }
+        for (const num of userInputArray) {
+            userInputOccurrences[num] = (userInputOccurrences[num] || 0) + 1;
+        }
+
+        let totalCorrectNumbers = 0;
+
+        for (const num of Object.keys(userInputOccurrences)) {
+            // Check if the number is present in both arrays
+            if (secretCodeOccurrences[num]) {
+              //return occurances overlap num
+              const minOccurrences = userInputOccurrences[num] < secretCodeOccurrences[num]
+                  ? userInputOccurrences[num]
+                  : secretCodeOccurrences[num];
+      
+              totalCorrectNumbers += minOccurrences;
+          }
+        }
 
         const correctLocationCount = board[0].filter((num, index) => num === userInputArray[index]).length;
 
         console.log("userInputArray:", userInputArray);
         console.log("board[0]:", board[0]);
-        console.log("correctNumberCount:", correctNumberCount);
-        console.log("correctLocationCount:", correctLocationCount);
 
         if (correctLocationCount === 4) {
           newFeedback = `Player ${currAttempt.player} guessed correctly! (Correct Number and Correct Location)`;
           setGameOver(true);
-        } else if (correctNumberCount > 0) {
-          newFeedback = `Player ${currAttempt.player} guessed correctly! (${correctLocationCount} correct location(s) & (${correctNumberCount} total correct numbers)`;
+        } else if (totalCorrectNumbers > 0) {
+          newFeedback = `Player ${currAttempt.player} guessed correctly! (${correctLocationCount} correct location(s) & (${totalCorrectNumbers} total correct numbers)`;
         } else {
           newFeedback = `Player ${currAttempt.player}'s guess was incorrect`;
         }
