@@ -13,28 +13,28 @@ export default function App() {
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(20);
-  const [timerInterval, setTimerInterval] = useState(null);
+  // const [timeLeft, setTimeLeft] = useState(20);
+  // const [timerInterval, setTimerInterval] = useState(null);
 
-  const updateTimer = () => { 
-    setTimeLeft((prevTimeLeft) => {
-      const newTime = prevTimeLeft - 1;
-      if (newTime <= 0) {
-        clearInterval(timerInterval);
-        switchPlayer();
-      }
-      return newTime;
-    });
-  };
+  // const updateTimer = () => { 
+  //   setTimeLeft((prevTimeLeft) => {
+  //     const newTime = prevTimeLeft - 1;
+  //     if (newTime <= 0) {
+  //       clearInterval(timerInterval);
+  //       switchPlayer();
+  //     }
+  //     return newTime;
+  //   });
+  // };
   
-  const switchPlayer = () => {
-    setCurrAttempt((prevAttempt) => ({
-      player: prevAttempt.player === 1 ? 2 : 1,
-      attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
-      number: "",
-    }));
-    setTimeLeft(20); 
-  };
+  // const switchPlayer = () => {
+  //   setCurrAttempt((prevAttempt) => ({
+  //     player: prevAttempt.player === 1 ? 2 : 1,
+  //     attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
+  //     number: "",
+  //   }));
+  //   setTimeLeft(20); 
+  // };
   
   const generateSecretCode = async () => {
     try {
@@ -49,11 +49,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    setTimerInterval(
-      setInterval(() => {
-        updateTimer();
-      }, 1000)
-    );
+    // setTimerInterval(
+    //   setInterval(() => {
+    //     updateTimer();
+    //   }, 1000)
+    // );
     // needs to be async because NumberCall.codeSearch returns a promise
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
@@ -67,12 +67,12 @@ export default function App() {
       }
     };
 
-    if (currAttempt.attempt === 0) {
+    if (currAttempt.attempt === 0 && currAttempt.player === 1) {
       fetchSecretCode();
     }
-    return () => {
-      clearInterval(timerInterval);
-    };
+    // return () => {
+    //   clearInterval(timerInterval);
+    // };
     }, [currAttempt]);
   
   const handleFormSubmission = async (userInput) => {
@@ -145,9 +145,9 @@ export default function App() {
             {!gameOver && (
               <React.Fragment>
                 <h2>Player {currAttempt.player}'s Turn - Guesses Remaining: {10 - currAttempt.attempt}</h2>
-                {timeLeft > 0 &&
+                {/* {timeLeft > 0 &&
                   <p>You have: {timeLeft} seconds remaining!</p>
-                }
+                } */}
                 <div className="guesses-container">
                   <div className="player-feedback">
                     <h3>Player 1's Feedback</h3>
