@@ -38,11 +38,9 @@ In this version of Mastermind, there are two players who take turns guessing the
 
 3. **Turns:** Each player has 10 attempts to guess the secret code.
 
-4. **Timer:** A timer of 20 seconds is set for each turn. If a player doesn't make a guess within the time limit, their turn ends.
+4. **Scoring:** Players receive feedback after each guess, indicating the correctness of their numbers and their positions.
 
-5. **Scoring:** Players receive feedback after each guess, indicating the correctness of their numbers and their positions.
-
-6. **Winning:** The player who correctly guesses the code or has the closest guess when the maximum attempts are reached wins.
+5. **Winning:** The player who correctly guesses the code or has the closest guess when the maximum attempts are reached wins.
 
 - After each guess, the computer will provide feedback in the form of:
   - Correctly guessed number
@@ -72,23 +70,12 @@ The game utilizes the [Random Number Generator API](https://www.random.org/integ
 - Returns response in plain text
 - Generate a new set of random numbers with each request
 
-### Getting Started
-
-1. Clone this repository.
-2. Install the required dependencies.
-3. Run the game application.
-4. Start guessing and crack the code!
-
-Enjoy playing Mastermind! If you have any issues or suggestions, feel free to contribute or open an issue. Good luck!
-
-
-
 ## Future Improvements
 
 Here are some potential areas for improvement:
 
 - Give user option to select multi player or single player mode
-- Fix timer glitch due to state. Possible to incorporate timer hook from react
+- Incorporate timer hook
 
 ## Feedback and Support
 
