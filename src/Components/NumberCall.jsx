@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default class NumberCall {
   static codeSearch() {
     return new Promise(function (resolve, reject) {
