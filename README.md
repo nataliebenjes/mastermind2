@@ -13,6 +13,12 @@ To set up the Mastermind on your local machine, follow these steps:
 
 4. Open your preferred web browser and go to `http://localhost:3000` to access the application.
 
+To deploy, run 
+`npm run deploy`
+
+site is hosted at
+https://nataliebenjes.github.io/mastermind2/
+
 # Mastermind Game
 
 Welcome to the Mastermind game, a classic code-breaking game with a multiplayer twist!
