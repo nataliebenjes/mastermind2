@@ -13,7 +13,31 @@ export default function App() {
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [gameOver, setGameOver] = useState(false);
+  const [playerCount, setPlayerCount] = useState(1);
+
+  const PlayerSetup = ({ setPlayerCount }) => {
+    const handlePlayerCountChange = (event) => {
+      setPlayerCount(parseInt(event.target.value, 10));
+    };
   
+    const startGame = () => {
+      // Add any initialization logic if needed
+      setPlayerCount(playerCount);
+    };
+  
+    return (
+      <div>
+        <label>
+          Select the number of players:
+          <select value={playerCount} onChange={handlePlayerCountChange}>
+            <option value={1}>1 Player</option>
+            <option value={2}>2 Players</option>
+          </select>
+        </label>
+        <button onClick={startGame}>Start Game</button>
+      </div>
+    );
+  };
   const generateSecretCode = async () => {
     try {
       const apiResponse = await NumberCall.codeSearch();
@@ -27,7 +51,6 @@ export default function App() {
   };
 
   useEffect(() => {
-   
     // needs to be async because NumberCall.codeSearch returns a promise
     const fetchSecretCode = async () => {
       const secretCode = await generateSecretCode();
@@ -41,10 +64,11 @@ export default function App() {
       }
     };
 
-    if (currAttempt.attempt === 0 && currAttempt.player === 1) {
-      fetchSecretCode();
-    }
-    }, [currAttempt]);
+    if ((playerCount === 2 && currAttempt.attempt === 0 && currAttempt.player === 1) || (playerCount === 1 && currAttempt.attempt === 0))  {
+        fetchSecretCode();
+      }
+    }, [playerCount, currAttempt]);
+      
   
   const handleFormSubmission = async (userInput) => {
     if ((currAttempt.attempt + 2) > 10) {
@@ -119,9 +143,12 @@ export default function App() {
 
   return (
     <div className="App">
-      <React.Fragment>
-        <AppContext.Provider value={{ board, setBoard }}>
-          <Header />
+    <React.Fragment>
+      <AppContext.Provider value={{ board, setBoard }}>
+        <Header />
+        {playerCount === 1 ? (
+          <PlayerSetup setPlayerCount={setPlayerCount} />
+        ) : (
           <div className="game-container">
             <h4>
               This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
@@ -170,6 +197,7 @@ export default function App() {
               </React.Fragment>
             )}
           </div>
+        )}
         </AppContext.Provider>
       </React.Fragment>
     </div>
