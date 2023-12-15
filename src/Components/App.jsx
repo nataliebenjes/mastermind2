@@ -149,17 +149,24 @@ export default function App() {
         }
         setFeedback(newFeedback);
 
-        setGuesses((prevGuesses) => [...prevGuesses, { player: currAttempt.player, attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
-
         console.log(feedback);
+        //change to accomodate 1 player
+        if (playerCount === 1){
+        setGuesses((prevGuesses) => [...prevGuesses, { attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
         setCurrAttempt((prevAttempt) => ({
-          player: prevAttempt.player === 1 ? 2 : 1,
-          attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
+          attempt: prevAttempt.attempt + 1,
           number: userInput,
         }));
+        } else {
+          setGuesses((prevGuesses) => [...prevGuesses, { player: currAttempt.player, attempt: currAttempt.attempt, number: userInput, feedback: newFeedback }]);
+          setCurrAttempt((prevAttempt) => ({
+            player: prevAttempt.player === 1 ? 2 : 1,
+            attempt: prevAttempt.attempt + (prevAttempt.player === 2 ? 1 : 0),
+            number: userInput,
+          }));
       }
     }
-  
+  }
 
   const handleRefresh = () => {
     window.location.reload();
@@ -176,7 +183,7 @@ export default function App() {
           <button onClick={startGame}>Start Game</button>
           </>
         ) : (
-        
+
           <div className="game-container">
             <h4>
               This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
