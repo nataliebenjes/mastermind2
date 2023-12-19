@@ -1,5 +1,6 @@
 import React, { useState, createContext, useEffect } from "react";
 import Header from "./Header";
+import Footer from "./Footer";
 import { boardDefault } from "../Numbers";
 import "../App.css";
 import NumbersSubmit from "./NumbersSubmit";
@@ -170,6 +171,7 @@ export default function App() {
               </React.Fragment>
             )}
           </div>
+          <Footer />
         </AppContext.Provider>
       </React.Fragment>
     </div>
