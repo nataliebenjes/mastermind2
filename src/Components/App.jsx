@@ -4,6 +4,8 @@ import Footer from "./Footer";
 import { boardDefault } from "../Numbers";
 import "../App.css";
 import NumbersSubmit from "./NumbersSubmit";
+import { Box, Typography } from "@mui/material";
+import { shades } from "../../public/theme";
 import NumberCall from "./NumberCall";
 
 export const AppContext = createContext();
@@ -123,6 +125,12 @@ export default function App() {
       <React.Fragment>
         <AppContext.Provider value={{ board, setBoard }}>
           <Header />
+          <Box
+          width="100%"
+          margin="auto"
+          display="flex"
+          backgroundColor={shades.orange[100]}
+          color={shades.orange[800]}>
           <div className="game-container">
             <h4>
               This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
@@ -171,6 +179,7 @@ export default function App() {
               </React.Fragment>
             )}
           </div>
+          </Box>
           <Footer />
         </AppContext.Provider>
       </React.Fragment>
