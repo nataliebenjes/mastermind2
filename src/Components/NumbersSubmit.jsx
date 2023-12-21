@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import AddIcon from "@mui/icons-material/Add";
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import React from 'react';
 
@@ -30,7 +30,7 @@ function NumbersSubmit(props) {
   return (
     <Box>
       <div className="center">
-        <div className="card">
+        <div className="submit-section">
           <p>
             <em>Make another guess</em>
           </p>
@@ -43,10 +43,10 @@ function NumbersSubmit(props) {
               value={userInput}
               onChange={handleChange}
               sx={{ width: '300px', fontSize: '14px' }}            />
-            <IconButton type="submit" variant="contained" color="primary">
+            <button type="submit" variant="contained" color="primary" className="custom-btn">
               {props.buttonText}
               <AddIcon />
-            </IconButton>
+            </button>
           </form>
         </div>
       </div>

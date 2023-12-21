@@ -77,6 +77,10 @@ Here are some potential areas for improvement:
 - Give user option to select multi player or single player mode
 - Incorporate timer hook
 
+![End game screenshot](image.png)
+- Add styling to "Play Again" button
+- Remove "Guesses" on "Game Over" Screen
+
 ## Feedback and Support
 
 If you have any feedback, suggestions, or need support, please feel free to reach out via GitHub.
