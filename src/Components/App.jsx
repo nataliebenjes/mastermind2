@@ -1,20 +1,16 @@
 import React, { useState, createContext, useEffect } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { boardDefault } from "../Numbers";
 import "../App.css";
 import NumbersSubmit from "./NumbersSubmit";
 import { Box, Typography } from "@mui/material";
 import { shades } from "../../public/theme";
 import NumberCall from "./NumberCall";
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 
 export const AppContext = createContext();
 
 export default function App() {
-  const [board, setBoard] = useState(boardDefault);
+  const [board, setBoard] = useState(0);
   const [currAttempt, setCurrAttempt] = useState({ player: 1, attempt: 0, number: "" });
   const [guesses, setGuesses] = useState([]);
   const [feedback, setFeedback] = useState("");
@@ -139,7 +135,7 @@ export default function App() {
               <h4>
                 This Mastermind game allows you to play against each other. Each player will take turns guessing. The computer will randomly select a pattern of four different numbers from a total of 8 different numbers (allowing duplicates). Your goal is to guess the correct combination within 10 attempts each.
               </h4>
-              <div className="card">
+              <div className="card" style={{ backgroundColor: shades.teal[600] }}>
               <h2>Guesses:</h2>
               {gameOver && (
                 <React.Fragment>
@@ -155,25 +151,25 @@ export default function App() {
                     <p>You have: {timeLeft} seconds remaining!</p>
                   } */}
                   <div className="guesses-container">
-                    <div className="player-feedback">
+                    <div className="player-feedback" style={{ backgroundColor: shades.orange[100] }}>
                       <h3>Player 1's Feedback</h3>
                       <ul>
                         {guesses
                           .filter((guess) => guess.player === 1)
                           .map((guess) => (
-                            <li key={guess.attempt} className="ind-feedback">
+                            <li key={guess.attempt} className="ind-feedback" style={{ backgroundColor: shades.orange[200] }}>
                             <strong>Attempt {guess.attempt + 1}: </strong> <em>{guess.number}</em> -  {guess.feedback}
                             </li>
                           ))}
                       </ul>
                     </div>
-                    <div className="player-feedback">
+                    <div className="player-feedback" style={{ backgroundColor: shades.orange[100] }}>
                       <h3>Player 2's Feedback</h3>
                       <ul>
                         {guesses
                           .filter((guess) => guess.player === 2)
                           .map((guess) => (
-                            <li key={guess.attempt} className="ind-feedback">
+                            <li key={guess.attempt} className="ind-feedback"  style={{ backgroundColor: shades.orange[200] }}>
                             <strong>Attempt {guess.attempt + 1}: </strong> <em>{guess.number}</em> -  {guess.feedback}
                             </li>
                           ))}

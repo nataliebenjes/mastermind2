@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import React from 'react';
+import { shades } from "../../public/theme";
+
 
 function NumbersSubmit(props) {
   const [userInput, setUserInput] = useState("");
@@ -42,7 +44,7 @@ function NumbersSubmit(props) {
               onChange={handleChange}
               sx= {{ width: '300px' }}
               />
-            <button type="submit"   className="custom-btn">
+            <button type="submit"   className="custom-btn" >
               {props.buttonText}
             </button>
           </form>

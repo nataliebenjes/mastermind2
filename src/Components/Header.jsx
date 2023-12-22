@@ -9,7 +9,7 @@ function Header() {
   return (
       <Box pt="10px"
       pb="1px"
-  backgroundColor={shades.orange[400]}>
+  backgroundColor={shades.orange[300]}>
       <Typography
           variant="h1"
           mb="30px"

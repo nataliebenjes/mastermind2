@@ -72,7 +72,7 @@ export const theme = createTheme({
   },
   typography: {
     fontFamily: ["Alegreya", "serif"].join(','),
-    fontSize: 18,
+    fontSize: 15,
     h1: {
       fontFamily: ["Amatic SC", "cursive"].join(','),
       fontSize: 45,
