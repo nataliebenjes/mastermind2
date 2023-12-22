@@ -1,9 +1,7 @@
 import PropTypes from "prop-types";
-import AddIcon from "@mui/icons-material/Add";
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import React from 'react';
-
 
 function NumbersSubmit(props) {
   const [userInput, setUserInput] = useState("");
@@ -42,10 +40,10 @@ function NumbersSubmit(props) {
               label="Enter your four number guess"
               value={userInput}
               onChange={handleChange}
-              sx={{ width: '300px', fontSize: '14px' }}            />
-            <button type="submit" variant="contained" color="primary" className="custom-btn">
+              sx= {{ width: '300px' }}
+              />
+            <button type="submit"   className="custom-btn">
               {props.buttonText}
-              <AddIcon />
             </button>
           </form>
         </div>
