@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
+
 //https://mui.com/material-ui/customization/typography/
 
 //rem font sizes gen shades: macOS: cmd+k cmd+g
@@ -71,23 +72,31 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ["Alegreya", "serif"].join(','),
+    fontFamily: ["Montserrat"].join(','),
     fontSize: 15,
     h1: {
-      fontFamily: ["Amatic SC", "cursive"].join(','),
+      fontFamily: ["Rubik Doodle Shadow"].join(','),
       fontSize: 45,
     },
     h2: {
-      fontFamily: ["Amatic SC", "cursive"].join(','),
+      fontFamily: ["Rubik Doodle Shadow"].join(','),
       fontSize: 36,
     },
     h3: {
-      fontFamily: ["Amatic SC", "cursive"].join(','),
+      fontFamily: ["Rubik Doodle Shadow"].join(','),
       fontSize: 20,
     },
     h4: {
-      fontFamily: ["Amatic SC", "cursive"].join(','),
+      fontFamily: ["Rubik Doodle Shadow"].join(','),
       fontSize: 14,
     },
-  }
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        // Include the Google Fonts link here
+        '@import': 'url("https://fonts.googleapis.com/css2?family=Afacad:wght@400;500&family=Montserrat:wght@300&family=Rubik+Doodle+Shadow&display=swap")',
+      },
+    },
+  },
 });

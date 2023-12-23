@@ -141,7 +141,11 @@ export default function App() {
                 <React.Fragment>
                   <p>Game Over! The secret code is {board[0]}</p>
                   <p>{feedback}</p>
-                  <button onClick={handleRefresh}>Play Again</button>
+                  <div className="play-again-container">
+                  <button
+                  
+                  className="custom-btn" onClick={handleRefresh}>Play Again</button>
+                  </div>
                 </React.Fragment>
               )}
               {!gameOver && (
